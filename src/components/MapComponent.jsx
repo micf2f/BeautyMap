@@ -1,22 +1,34 @@
 import {useEffect, useRef, useState} from "react"
 import {LoadScript, GoogleMap} from "@react-google-maps/api"
 import {usePlaces} from "../contexts/PlacesContext.jsx"
-import API_KEY from "../utils/googleAPISetup.js"
-import MAP_ID from "../utils/googleMapSetup.js"
-import {typeToIcon} from "../utils/constants.js"
+import {useLocation} from "../contexts/LocationContext.jsx"
 import PlaceItem from "./PlaceItem.jsx"
 import Categories from "./Categories.jsx"
+import API_KEY from "../utils/googleAPISetup.js"
+import MAP_ID from "../utils/googleMapSetup.js"
+import {CITIES} from "../utils/cities.js"
+import {typeToIcon} from "../utils/constants.js"
 import salonIcon from "../assets/map-icons/salons.png"
+import {ChevronUpIcon, ChevronDownIcon} from "@heroicons/react/24/outline"
 
 const libraries = ["marker"]
 
 export default function MapComponent() {
+  const {city} = useLocation()
+  const {currentSet} = usePlaces()
+
+  const cityConfig = CITIES.find(c => c.value === city)
+
   const [selectedPlace, setSelectedPlace] = useState(null)
+  const [showCategories, setShowCategories] = useState(true)
+  const [mapLoaded, setMapLoaded] = useState(false)
+  const [mapState, setMapState] = useState(() => ({
+    center: cityConfig?.center ?? { lat: 0, lng: 0 },
+    zoom: 12,
+  }))
+
   const mapRef = useRef(null)
   const markersRef = useRef([])
-  const [mapLoaded, setMapLoaded] = useState(false)
-
-  const {currentSet} = usePlaces()
 
   const clearMarkers = () => {
     markersRef.current.forEach((marker) => marker.setMap(null))
@@ -80,6 +92,18 @@ export default function MapComponent() {
     })
   }, [currentSet, mapLoaded])
 
+  const handleMapIdle = () => {
+    if (!mapRef.current) return
+
+    const center = mapRef.current.getCenter()
+    const zoom = mapRef.current.getZoom()
+
+    setMapState({
+      center: { lat: center.lat(), lng: center.lng() },
+      zoom,
+    })
+  }
+
   const handleMapLoad = (mapInstance) => {
     mapRef.current = mapInstance
     setMapLoaded(true)
@@ -90,19 +114,29 @@ export default function MapComponent() {
       <div className="relative w-full h-screen">
         <GoogleMap
           mapContainerStyle={{width: "100%", height: "100%"}}
-          center={{lat: 50.4501, lng: 30.5234}}
-          zoom={12}
+          center={mapState.center}
+          zoom={mapState.zoom}
           options={{
             disableDefaultUI: true,
             mapId: MAP_ID,
+            gestureHandling: 'greedy'
           }}
           onLoad={handleMapLoad}
+          onIdle={handleMapIdle}
         />
 
-        <div className="absolute top-4 left-0 right-0 z-[49] flex justify-center px-4">
-          <div className="w-full cursor-pointer">
-            <Categories />
-          </div>
+        <div className="absolute top-4 left-0 right-0 z-[49] flex flex-col justify-center items-center px-4">
+          <button onClick={() => setShowCategories(!showCategories)}
+                  className='w-60 flex justify-center items-center gap-2 bg-rose-400 hover:bg-rose-800 text-white font-semibold text-xs rounded-full px-4 py-2 uppercase transition-colors'
+          >
+            {showCategories ? 'Приховати категорії' : 'Показати категорії'}
+            {showCategories ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
+          </button>
+          {showCategories && (
+            <div className="w-full cursor-pointer">
+              <Categories />
+            </div>
+          )}
         </div>
 
         {selectedPlace &&

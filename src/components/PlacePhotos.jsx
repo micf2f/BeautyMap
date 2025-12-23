@@ -20,6 +20,15 @@ function PlacePhotos({place, size}) {
     autoplay: false,
   }
 
+  const handleImageError = (index) => {
+    setPhotos(prev => {
+      const next = prev.filter((_, i) => i !== index)
+      photoCache[place.id] = next
+
+      return next.length ? next : []
+    })
+  }
+
   useEffect(() => {
     if (!place) return
 
@@ -48,6 +57,7 @@ function PlacePhotos({place, size}) {
               src={photo}
               alt="place image"
               className={`rounded-2xl object-cover ${size}`}
+              onError={() => handleImageError(index)}
             />
           </div>
         ))}

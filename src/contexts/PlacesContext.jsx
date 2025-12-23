@@ -1,11 +1,14 @@
 import {createContext, useContext, useState} from "react"
 import axios from "axios"
+import {useLocation} from "./LocationContext.jsx"
 import API_KEY from "../utils/googleAPISetup.js"
 import {categories} from "../utils/constants.js"
 
 const PlacesContext = createContext(null)
 
 export function PlacesProvider({children}) {
+  const {currentDistrict} = useLocation()
+
   // const [places, setPlaces] = useState([])
   const [beautySalons, setBeautySalons] = useState([])
   const [hairCare, setHairCare] = useState([])
@@ -13,7 +16,6 @@ export function PlacesProvider({children}) {
   const [barbershops, setBarbershops] = useState([])
   const [makeupSalons, setMakeupSalons] = useState([])
   const [nailSalons, setNailSalons] = useState([])
-
   const [placesCategory, setPlacesCategory] = useState(categories[0])
 
   const datasets = {
@@ -28,9 +30,15 @@ export function PlacesProvider({children}) {
   const currentSet = datasets[placesCategory.key] || []
 
   const url = 'https://places.googleapis.com/v1/places:searchNearby'
-  const location = { latitude: 50.4501, longitude: 30.5234 }
-  const radius = 20000
-  // const limit = 12
+  const location = currentDistrict ?
+    {
+      latitude: currentDistrict.center.lat,
+      longitude: currentDistrict.center.lng,
+    }
+    :
+    { latitude: 50.4501, longitude: 30.5234 }
+  const radius = currentDistrict?.radius ?? 20000
+  // const limit = 20
   const fields = [
     'places.id',
     'places.displayName',
@@ -119,11 +127,7 @@ export function PlacesProvider({children}) {
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       console.log('Beauty salons: ', results)
 
-      if (beautySalons.length) {
-        setBeautySalons(prev => [...prev, ...results])
-      } else {
-        setBeautySalons(results)
-      }
+      setBeautySalons(results)
 
     } catch (error) {
       console.error('API request Beauty salons error:', error.response?.data || error.message)
@@ -159,11 +163,7 @@ export function PlacesProvider({children}) {
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       console.log('Hair care: ', results)
 
-      if (hairCare.length) {
-        setHairCare(prev => [...prev, ...results])
-      } else {
-        setHairCare(results)
-      }
+      setHairCare(results)
 
     } catch (error) {
       console.error('API request Hair care error:', error.response?.data || error.message)
@@ -199,11 +199,7 @@ export function PlacesProvider({children}) {
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       console.log('Skin care: ', results)
 
-      if (skinCare.length) {
-        setSkinCare(prev => [...prev, ...results])
-      } else {
-        setSkinCare(results)
-      }
+      setSkinCare(results)
 
     } catch (error) {
       console.error('API request Skin care error:', error.response?.data || error.message)
@@ -239,11 +235,7 @@ export function PlacesProvider({children}) {
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       console.log('Skin care: ', results)
 
-      if (barbershops.length) {
-        setBarbershops(prev => [...prev, ...results])
-      } else {
-        setBarbershops(results)
-      }
+      setBarbershops(results)
 
     } catch (error) {
       console.error('API request Barbershops error:', error.response?.data || error.message)
@@ -279,11 +271,7 @@ export function PlacesProvider({children}) {
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       console.log('Skin care: ', results)
 
-      if (makeupSalons.length) {
-        setMakeupSalons(prev => [...prev, ...results])
-      } else {
-        setMakeupSalons(results)
-      }
+      setMakeupSalons(results)
 
     } catch (error) {
       console.error('API request Makeup salons error:', error.response?.data || error.message)
@@ -319,11 +307,7 @@ export function PlacesProvider({children}) {
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       console.log('Skin care: ', results)
 
-      if (nailSalons.length) {
-        setNailSalons(prev => [...prev, ...results])
-      } else {
-        setNailSalons(results)
-      }
+      setNailSalons(results)
 
     } catch (error) {
       console.error('API request Nail salons error:', error.response?.data || error.message)

@@ -1,5 +1,6 @@
 import {NavLink, useLocation} from "react-router-dom"
 import LocationSelect from "./LocationSelect.jsx"
+import DistrictSelect from "./DistrictSelect.jsx"
 import logo from '../assets/logo-light.png'
 import logoMini from '../assets/logo-mini.png'
 import {MapPinIcon, ListBulletIcon} from "@heroicons/react/24/outline"
@@ -16,7 +17,10 @@ export default function Header() {
       </NavLink>
 
       <div className='flex items-center justify-center gap-4 p-2'>
-        <LocationSelect/>
+        <div className='flex flex-col md:flex-row items-end gap-2'>
+          <LocationSelect/>
+          <DistrictSelect/>
+        </div>
         <NavLink
           to={location.pathname === '/places/list' ? '/places/map' : '/places/list'}
           className='bg-rose-400 hover:bg-rose-800 text-white font-semibold text-xs rounded-full px-4 py-2 uppercase transition-colors'

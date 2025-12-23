@@ -12,7 +12,7 @@ const categories = [
     name: 'Салони краси',
     types: ['beauty_salon'],
     icon: salonIcon,
-    style: 'bg-rose-100 text-rose-400 border-rose-200'
+    style: 'bg-pink-100 text-pink-400 border-pink-200'
   },
   {
     id: 2,
@@ -44,7 +44,7 @@ const categories = [
     name: 'Макіяж',
     types: ['makeup_artist'],
     icon: makeupIcon,
-    style: 'bg-pink-100 text-pink-400 border-pink-200'
+    style: 'bg-amber-50 text-amber-500 border-amber-200'
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ const categories = [
     name: 'Манікюр та педикюр',
     types: ['nail_salon'],
     icon: nailIcon,
-    style: 'bg-pink-100 text-pink-400 border-pink-200'
+    style: 'bg-teal-50 text-teal-500 border-teal-200'
   },
 ]
 

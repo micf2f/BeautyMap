@@ -1,4 +1,3 @@
-import {useEffect} from "react"
 import {usePlaces} from "../contexts/PlacesContext.jsx"
 import PlaceItem from "../components/PlaceItem.jsx"
 import Categories from "../components/Categories.jsx"

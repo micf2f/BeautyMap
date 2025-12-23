@@ -1,54 +1,48 @@
 import {useEffect} from "react"
 import {Outlet} from "react-router-dom"
 import {usePlaces} from "../contexts/PlacesContext.jsx"
+import {useLocation} from "../contexts/LocationContext.jsx"
 import Header from "../components/Header.jsx"
 
 export default function Layout() {
   const {
     placesCategory,
-    beautySalons, getBeautySalons,
-    hairCare, getHairCare,
-    skinCare, getSkinCare,
-    barbershops, getBarbershops,
-    makeupSalons, getMakeupSalons,
-    nailSalons, getNailSalons
+    getBeautySalons,
+    getHairCare,
+    getSkinCare,
+    getBarbershops,
+    getMakeupSalons,
+    getNailSalons
   } = usePlaces()
 
+  const {districtKey} = useLocation()
+
   useEffect(() => {
-    if (placesCategory.key === 'beauty_salons' && beautySalons.length === 0) {
+    if (placesCategory.key === 'beauty_salons') {
       getBeautySalons()
     }
-  }, [placesCategory])
 
-  useEffect(() => {
-    if (placesCategory.key === 'hair_care' && hairCare.length === 0) {
+    if (placesCategory.key === 'hair_care') {
       getHairCare()
     }
-  }, [placesCategory])
 
-  useEffect(() => {
-    if (placesCategory.key === 'skin_care' && skinCare.length === 0) {
+    if (placesCategory.key === 'skin_care') {
       getSkinCare()
     }
-  }, [placesCategory])
 
-  useEffect(() => {
-    if (placesCategory.key === 'barbershops' && barbershops.length === 0) {
+    if (placesCategory.key === 'barbershops') {
       getBarbershops()
     }
-  }, [placesCategory])
 
-  useEffect(() => {
-    if (placesCategory.key === 'makeup_salons' && makeupSalons.length === 0) {
+    if (placesCategory.key === 'makeup_salons') {
       getMakeupSalons()
     }
-  }, [placesCategory])
 
-  useEffect(() => {
-    if (placesCategory.key === 'nail_salons' && nailSalons.length === 0) {
+    if (placesCategory.key === 'nail_salons') {
       getNailSalons()
     }
-  }, [placesCategory])
+
+  }, [placesCategory, districtKey])
 
   return (
     <div className='font-montserrat'>
