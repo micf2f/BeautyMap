@@ -47,20 +47,14 @@ export function PlacesProvider({children}) {
     'places.location',
     'places.rating',
     'places.userRatingCount',
-    // 'places.reviews' TODO: GET /places/{placeId}
     'places.googleMapsUri',
     'places.websiteUri',
     'places.internationalPhoneNumber',
     'places.types',
     'places.primaryType',
     'places.primaryTypeDisplayName',
-    // 'places.editorialSummary' TODO: find description
     'places.currentOpeningHours',
     'places.photos'
-
-    // TODO: feature show 'places.priceLevel'
-    // TODO: feature show 'places.parkingOptions'
-    // TODO: feature show 'places.paymentOptions'
   ].join(',')
 
   // const getPlaces = async (types, limit) => {

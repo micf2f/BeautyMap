@@ -12,7 +12,7 @@ export default function PlacesList() {
         {currentSet.length
           ? currentSet.map((place) => (
             <div key={place.id}>
-              <PlaceItem place={place}/>
+              <PlaceItem place={place} enableModal={true} />
             </div>
           ))
           : null}

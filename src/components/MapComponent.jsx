@@ -150,7 +150,7 @@ export default function MapComponent() {
             flex flex-col
           ">
             <div className="flex-1 overflow-y-auto rounded-xl border-3 border-gray-300 border-dashed bg-white">
-              <PlaceItem place={selectedPlace} enableClose={true} setSelectedPlace={setSelectedPlace}/>
+              <PlaceItem place={selectedPlace} enableClose={true} setSelectedPlace={setSelectedPlace} enableModal={false} />
             </div>
           </div>
         }

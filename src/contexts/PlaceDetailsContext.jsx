@@ -9,18 +9,12 @@ export function PlaceDetailsProvider({children}) {
 
   const fields = [
     'editorialSummary',
+    'reviewSummary',
     'reviews',
-    'priceLevel',
+    'priceRange',
     'parkingOptions',
     'paymentOptions',
-    'accessibilityOptions',
-    'restroom',
-    'outdoorSeating',
-    'servesBeer',
-    'servesWine',
-    'servesCocktails',
-    'goodForGroups',
-    'allowsDogs'
+    // 'accessibilityOptions'
   ].join(',')
 
   const getPlaceDetails = async (placeId) => {
@@ -28,6 +22,9 @@ export function PlaceDetailsProvider({children}) {
       const response = await axios.get(
         `https://places.googleapis.com/v1/places/${placeId}`,
         {
+          params: {
+            languageCode: 'uk',
+          },
           headers: {
             "X-Goog-Api-Key": API_KEY,
             "X-Goog-FieldMask": fields,
@@ -42,14 +39,6 @@ export function PlaceDetailsProvider({children}) {
       console.error('Error during getting place details:', err)
     }
   }
-
-  useEffect(() => {
-    // getPlaceDetails('ChIJq15u-LjP1EAR2k6gWj6z_Kk')
-  },[])
-
-  useEffect(() => {
-    console.log('details:', details)
-  },[details])
 
   return (
     <PlaceDetailsContext.Provider value={{

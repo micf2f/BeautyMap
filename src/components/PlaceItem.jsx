@@ -3,9 +3,11 @@ import PlaceDetails from "./PlaceDetails.jsx"
 import PlacePhotos from "./PlacePhotos.jsx"
 import {StarIcon} from '@heroicons/react/24/solid'
 import {ChevronDownIcon, ChevronUpIcon, XMarkIcon} from '@heroicons/react/24/outline'
+import PlaceItemModal from "./PlaceItemModal.jsx";
 
-export default function PlaceItem({place, enableClose = false, setSelectedPlace}) {
+export default function PlaceItem({place, enableClose = false, setSelectedPlace, enableModal}) {
   const [showDetails, setShowDetails] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   return (
     <div className={`rounded-xl flex flex-col h-full justify-between bg-white ${enableClose ? '' : 'border-3 border-gray-300 border-dashed'}`}>
@@ -32,7 +34,7 @@ export default function PlaceItem({place, enableClose = false, setSelectedPlace}
         <div className="flex items-center justify-between mx-4 mb-4">
           <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold">
             <StarIcon className="h-6 w-6 text-yellow-500"/>
-            {place?.rating ? place.rating : '–'} ({place?.userRatingCount ? place.userRatingCount : '0'} відгуків)
+            {place?.rating ? place.rating : ''} ({place?.userRatingCount ? place.userRatingCount : '0'} відгуків)
           </span>
           <span
             className={`text-[10px] font-bold rounded-xl py-1 px-3 uppercase ${
@@ -44,6 +46,16 @@ export default function PlaceItem({place, enableClose = false, setSelectedPlace}
         </div>
       </div>
 
+      {enableModal && (
+        <div className='flex items-center justify-center mb-4'>
+          <button className='w-35 bg-rose-400 hover:bg-rose-800 text-white font-semibold text-xs rounded-full px-4 py-2 uppercase transition-colors'
+                  onClick={() => setShowModal(true)}
+          >
+            Детальніше
+          </button>
+        </div>
+      )}
+
       <button
         className='flex items-center justify-center text-gray-500 text-sm mt-auto mb-4 gap-1'
         onClick={() => setShowDetails(!showDetails)}
@@ -54,6 +66,8 @@ export default function PlaceItem({place, enableClose = false, setSelectedPlace}
       </button>
 
       {showDetails && (<PlaceDetails place={place}/>)}
+
+      {showModal && (<PlaceItemModal place={place} isOpen={showModal} onClose={() => setShowModal(false)} />)}
 
     </div>
   )
